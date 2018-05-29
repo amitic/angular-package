@@ -1,11 +1,9 @@
 // external
-import { Inject, ViewChild, ViewContainerRef, Type} from '@angular/core';
+import { ViewChild, ViewContainerRef, Type } from '@angular/core';
 
 // internal
-import { ComponentLoaderCommonAClass } from './component-loader-common.aclass';
+import { ComponentLoaderCommonClass } from './component-loader-common.aclass';
 import { ComponentLoaderClassInterface } from '../interface';
-import { CallbackSetterType } from '../../property-wrapper/type/callback-setter.type';
-import { CallbackGetterType } from '../../property-wrapper/type/callback-getter.type';
 
 /**
  * Class to handle loading dynamic component.
@@ -15,7 +13,7 @@ import { CallbackGetterType } from '../../property-wrapper/type/callback-getter.
  */
 export
   class ComponentLoaderClass<T>
-  extends ComponentLoaderCommonAClass<T>
+  extends ComponentLoaderCommonClass<T>
   implements ComponentLoaderClassInterface<T> {
 
   /**
@@ -24,7 +22,7 @@ export
    * @type {*}
    * @memberof ComponentLoaderClass
    */
-  @ViewChild('container', { read: ViewContainerRef }) public container?: ViewContainerRef;
+  @ViewChild('container', { read: ViewContainerRef }) container?: ViewContainerRef;
 
   /**
    * Create in html `#container` resolved component.
@@ -32,7 +30,7 @@ export
    * @returns {this}
    * @memberof ComponentLoaderClass
    */
-  public __create<D = T>(component: Type<D>): this {
+  __create<D = T>(component: Type<D>): this {
     if (!this.__component && this.container && component) {
       this.__component = this.container.createComponent(this.__resolve(component));
     }
@@ -44,14 +42,12 @@ export
    * @returns {undefined}
    * @memberof ComponentLoaderClass
    */
-  public __destroy(): undefined {
-    if (this.__component) {
-      if (this.container) {
-        this.__component.destroy();
-        this.__component = undefined;
-        this.container.clear();
-        return this.__component;
-      }
+  __destroy(): undefined {
+    if (this.__component && this.container) {
+      this.__component.destroy();
+      this.__component = undefined;
+      this.container.clear();
+      return this.__component;
     }
   }
 
@@ -60,7 +56,7 @@ export
    * @param {string[]} [p=this.__properties] Properties to be linked in source component with dynamic component.
    * @memberof ComponentLoaderClass
    */
-  public __link(p: string[] = this.__properties): void {
+  __link(p: string[] = this.__properties): void {
     this.__wrap(p, this,
       <PT>(property: string, sourcePropertyName: string) => {
         if (this.__set instanceof Function) {
