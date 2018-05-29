@@ -1,1 +1,1 @@
-export { PropertyWrapperClass } from './src';
+export { PropertyClass } from './src';
