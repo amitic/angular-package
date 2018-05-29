@@ -65,9 +65,11 @@ Thumbs.db
 
 # Ignore one of dist subpackage
 /component-loader
+/handler
 /interface
 /src
 /store
+/testing
 /type
 /property-wrapper
 
