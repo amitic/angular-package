@@ -29,7 +29,7 @@ export class PropertyClass extends PrefixSuffixClass {
     if (property instanceof Array) {
       property.forEach(p => {
         this._binded.push(p);
-      })
+      });
     }
     if (typeof property === 'string') {
       this._binded.push(property);
@@ -189,9 +189,8 @@ export class PropertyClass extends PrefixSuffixClass {
             }
             if (typeof target === 'string') {
               return this[target][property];
-            } else {
-              return target[property];
             }
+            return target[property];
           },
           set: function (value: R) {
             // Use old setter.
