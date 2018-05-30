@@ -71,7 +71,7 @@ Thumbs.db
 /store
 /testing
 /type
-/property-wrapper
+/property
 
 # Ignore rollup bundle files
 /bundle.*
