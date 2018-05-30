@@ -1,7 +1,9 @@
 {
   "extends": [
     "rxjs-tslint-rules",
-    "tslint-eslint-rules"
+    "tslint-eslint-rules",
+    "tslint-angular",
+    "angular-tslint-rules"
   ],
   "rulesDirectory": [
     "node_modules/codelyzer",
