@@ -13,6 +13,7 @@
     "node_modules/rxjs-tslint-rules"
   ],
   "rules": {
+    "no-implicit-dependencies": [true, "dev"],
     "rxjs-add": { "severity": "error" },
     "rxjs-no-unused-add": { "severity": "error" },
     "rx-subject-restrictions": true,
