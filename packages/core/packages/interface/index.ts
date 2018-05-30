@@ -1,1 +1,1 @@
-export { CycleHookInterface } from './cycle-hook.interface';
+export { CycleHookMethods } from './cycle-hook-methods.interface';
