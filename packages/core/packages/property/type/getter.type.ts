@@ -1,1 +1,1 @@
-export type Getter<S, R = any> = (property: string, source?: S) => R;
+export type Getter<S, R = any> = (property: string, source?: Function | S) => R;
