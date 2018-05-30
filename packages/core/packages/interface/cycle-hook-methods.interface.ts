@@ -1,4 +1,4 @@
-export interface CycleHookInterface {
+export interface CycleHookMethods {
   ngAfterContentInit?: Function;
   ngAfterContentChecked?: Function;
   ngAfterViewInit?: Function;
