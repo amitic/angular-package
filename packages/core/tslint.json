@@ -13,6 +13,7 @@
     "node_modules/rxjs-tslint-rules"
   ],
   "rules": {
+    "no-invalid-this": false, // Because of using `this` in setters/getters.
     "no-implicit-dependencies": [true, "dev"],
     "rxjs-add": { "severity": "error" },
     "rxjs-no-unused-add": { "severity": "error" },
