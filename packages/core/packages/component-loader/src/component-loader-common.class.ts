@@ -127,7 +127,7 @@ export
    * @template D Dynamic component type.
    * @param component Component to resolve.
    */
-  protected __resolve<D = T>(component: Type<D>): ComponentFactory<D> {
+  protected __resolve(component: Type<T>): ComponentFactory<T> {
     return this.componentFactoryResolver.resolveComponentFactory(component);
   }
 
