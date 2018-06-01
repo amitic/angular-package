@@ -1,5 +1,10 @@
 // external
-import { ComponentFactoryResolver, ComponentRef, Type } from '@angular/core';
+import {
+  ComponentFactory,
+  ComponentFactoryResolver,
+  ComponentRef,
+  Type
+} from '@angular/core';
 
 // internal
 import { ComponentLoaderCommonInterface } from '../interface';
@@ -122,10 +127,8 @@ export
    * @template D Dynamic component type.
    * @param component Component to resolve.
    */
-  protected __resolve<D = T>(component: Type<D>): any {
-    if (component) {
-      return this.componentFactoryResolver.resolveComponentFactory(component);
-    }
+  protected __resolve<D = T>(component: Type<D>): ComponentFactory<D> {
+    return this.componentFactoryResolver.resolveComponentFactory(component);
   }
 
   /**
