@@ -2,11 +2,12 @@
 import {
   ApplicationRef,
   ComponentFactoryResolver,
-  // EmbeddedViewRef,
   ElementRef,
+  // EmbeddedViewRef,
   Injectable,
   Injector,
-  Type
+  Type,
+  // ViewRef
 } from '@angular/core';
 
 // internal
@@ -142,7 +143,6 @@ export
   init<S>(config: ComponentLoaderConfigInterface<T>, source?: S): this {
     Object.assign(this, config);
 
-    console.info(config);
     this
       .__create(config.component)
       .attachView()
@@ -162,12 +162,15 @@ export
    */
   appendChild(container: string): this {
     if (container && this.__component) {
-      this
+      const q = this
         .elementRef
         .nativeElement
-        .querySelector(container)
-        .appendChild(this.__component.hostView);
-        // .appendChild((this.__component.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement);
+        .querySelector(container);
+      
+      if (this.__component.hostView.hasOwnProperty('rootNodes')) {
+        q.appendChild(this.__component.hostView['rootNodes'][0]);
+      }
+      // q.appendChild((this.__component.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement);
     }
 
     return this;
