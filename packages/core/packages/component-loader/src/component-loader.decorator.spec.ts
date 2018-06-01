@@ -35,8 +35,8 @@ describe('ComponentLoader (Decorator)', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [TestModule]
-    });
-    TestBed.compileComponents();
+    })
+      .compileComponents();
   }));
 
   // synchronous beforeEach
