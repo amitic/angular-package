@@ -6,7 +6,7 @@ import {
   // EmbeddedViewRef,
   Injectable,
   Injector,
-  Type,
+  Type
   // ViewRef
 } from '@angular/core';
 
