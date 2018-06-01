@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 
 /**
  * @export
- * @template T Type of component to load.
+ * @template T Component type to load.
  */
 export interface ComponentLoaderConfigInterface<T> {
   component: Type<T>;
