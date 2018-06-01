@@ -2,7 +2,7 @@
 import { ViewChild, ViewContainerRef, Type } from '@angular/core';
 
 // internal
-import { ComponentLoaderCommonClass } from './component-loader-common.aclass';
+import { ComponentLoaderCommonClass } from './component-loader-common.class';
 import { ComponentLoaderClassInterface } from '../interface';
 
 /**
