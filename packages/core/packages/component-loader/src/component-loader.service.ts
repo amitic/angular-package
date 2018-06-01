@@ -2,7 +2,7 @@
 import {
   ApplicationRef,
   ComponentFactoryResolver,
-  EmbeddedViewRef,
+  // EmbeddedViewRef,
   ElementRef,
   Injectable,
   Injector,
@@ -10,21 +10,20 @@ import {
 } from '@angular/core';
 
 // internal
-import { ComponentLoaderCommonAClass } from './component-loader-common.aclass';
+import { ComponentLoaderCommonClass } from './component-loader-common.aclass';
 import { ComponentLoaderConfigInterface, ComponentLoaderServiceInterface } from '../interface';
 
 /**
- * Service to make easier handle loading dynamic component.
+ * Service to make handle loading dynamic component easier.
  * It is created with https://medium.com/@caroso1222/angular-pro-tip-how-to-dynamically-create-components-in-body-ba200cc289e6.
  * @export
- * @class ComponentLoaderService
- * @extends {ComponentLoaderCommonAClass}
- * @template T
+ * @extends {ComponentLoaderCommonClass}
+ * @template T Component type to load.
  */
 @Injectable()
 export
   class ComponentLoaderService<T>
-  extends ComponentLoaderCommonAClass<T>
+  extends ComponentLoaderCommonClass<T>
   implements ComponentLoaderServiceInterface<T> {
 
   // Prefix
@@ -42,7 +41,6 @@ export
     return this.__suffix;
   }
 
-
   set componentPropertyName(value: string) {
     this.__componentPropertyName = value;
   }
@@ -50,27 +48,24 @@ export
     return this.__componentPropertyName;
   }
 
-  set properties(properties: string[]) {
+  set properties(properties: Array<string>) {
     this.__properties = properties;
   }
-  get properties(): string[] {
+  get properties(): Array<string> {
     return this.__properties;
   }
 
   /**
    * Whether dynamic component is attached to view or it is not.
-   * @private
-   * @memberof ComponentLoaderService
    */
   private attached = false;
 
   /**
    * Creates an instance of ComponentLoaderService.
-   * @param {ApplicationRef} appRef
-   * @param {Injector} injector
-   * @param {ComponentFactoryResolver} componentFactoryResolver
-   * @param {ElementRef} elementRef
-   * @memberof ComponentLoaderService
+   * @param appRef https://angular.io/api/core/ApplicationRef
+   * @param injector https://angular.io/api/core/Injector
+   * @param componentFactoryResolver https://angular.io/api/core/ComponentFactoryResolver
+   * @param elementRef https://angular.io/api/core/ElementRef
    */
   constructor(
     private appRef: ApplicationRef,
@@ -84,12 +79,10 @@ export
   /**
    * Link properties of source component to dynamic component.
    * @template S Source component.
-   * @param {string[]} [properties=this.properties] Properties from component source.
-   * @param {S} source Source component which properties are linked to dynamic component.
-   * @returns {this}
-   * @memberof ComponentLoaderService
+   * @param [properties=this.properties] Properties from component source.
+   * @param source Source component which properties are linked to dynamic component.
    */
-  public __link<S>(properties: string[] = this.properties, source: S): this {
+  __link<S>(properties: Array<string> = this.properties, source: S): this {
     if (properties instanceof Array) {
       this.__wrap<S>(properties, source,
         (property: string, sourcePropertyName: string, s?: S) => {
@@ -98,52 +91,50 @@ export
             this.__set(property, s[sourcePropertyName]);
           }
         },
-        (property: string, s?: S) => {
+        (property: string) => {
           // TODO
           if (this.__get instanceof Function) {
             return this.__get(property);
           }
         });
     }
+
     return this;
   }
 
   /**
    * Create resolved component.
    * @template D Type of dynamic component.
-   * @param {Type<D>} component Dynamic component to create.
-   * @returns {this}
-   * @memberof ComponentLoaderService
+   * @param component Dynamic component to create.
    */
-  public __create<D = T>(component: Type<D>): this {
+  __create<D = T>(component: Type<D>): this {
     if (!this.__component) {
-      this.__component = this.__resolve(component).create(this.injector);
+      this.__component = this.__resolve(component)
+        .create(this.injector);
     }
+
     return this;
   }
 
   /**
    * Detach view and destroy dynamic component.
-   * @returns {this}
-   * @memberof ComponentLoaderService
    */
-  public __destroy(): undefined {
+  __destroy(): undefined {
     this.detachView();
     if (this.__component) {
       this.__component.destroy();
       this.__component = undefined;
     }
+
     return this.__component;
   }
 
   /**
    * @template S
-   * @param {ComponentLoaderConfigInterface<T>} config
-   * @param {S} [source] Component which its properties are linked to dynamic component.
-   * @returns {this}
-   * @memberof ComponentLoaderService
+   * @param config
+   * @param [source] Component which its properties are linked to dynamic component.
    */
-  public init<S>(config: ComponentLoaderConfigInterface<T>, source?: S): this {
+  init<S>(config: ComponentLoaderConfigInterface<T>, source?: S): this {
     Object.assign(this, config);
 
     this
@@ -161,44 +152,42 @@ export
 
   /**
    * Append HTMLElement of dynamic component to specified container.
-   * @param {string} container Name of place for querySelector that dynamic component will be placed.
-   * @returns {this}
-   * @memberof ComponentLoaderService
+   * @param container Name of place for querySelector that dynamic component will be placed.
    */
-  public appendChild(container: string): this {
+  appendChild(container: string): this {
     if (container && this.__component) {
       this
         .elementRef
         .nativeElement
         .querySelector(container)
-        .appendChild((this.__component.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement);
+        .appendChild(this.__component.hostView);
+        // .appendChild((this.__component.hostView as EmbeddedViewRef<any>).rootNodes[0] as HTMLElement);
     }
+
     return this;
   }
 
   /**
    * Attach dynamic component view.
-   * @returns {this}
-   * @memberof ComponentLoaderService
    */
-  public attachView(): this {
+  attachView(): this {
     if (this.attached === false && this.__component) {
       this.appRef.attachView(this.__component.hostView);
       this.attached = true;
     }
+
     return this;
   }
 
   /**
    * Detach dynamic component view.
-   * @returns {this}
-   * @memberof ComponentLoaderService
    */
-  public detachView(): this {
+  detachView(): this {
     if (this.__component && this.attached === true) {
       this.appRef.detachView(this.__component.hostView);
       this.attached = false;
     }
+    
     return this;
   }
 }
