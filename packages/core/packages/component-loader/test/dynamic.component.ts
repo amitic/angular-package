@@ -1,20 +1,20 @@
 import {
   Component,
-  ComponentFactoryResolver,
+  // ComponentFactoryResolver,
   EventEmitter,
   Output
 } from '@angular/core';
 
 @Component({
   // selector: 'dynamic-component',
-  template: 'Dynamic component created succesfully'
+  template: `Dynamic component created succesfully`
 })
 export class DynamicComponent {
   __prefix: string;
   __suffix: string;
   key = 'notdefined';
-  public assign = 'notassigned';
-  public model = {
+  assign = 'notassigned';
+  model = {
     defined: true
   };
   age = 27;
@@ -23,15 +23,15 @@ export class DynamicComponent {
 
   @Output() event: EventEmitter<any> = new EventEmitter();
 
-  emit() {
+  emit(): void {
     this.event.emit('event');
   }
 
-  emitComplete() {
+  emitComplete(): void {
     this.event.complete();
   }
 
-  emitError() {
+  emitError(): void {
     this.event.error({
       error: new Error('event error')
     });
