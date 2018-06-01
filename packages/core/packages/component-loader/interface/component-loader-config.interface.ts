@@ -1,15 +1,12 @@
-import { Type } from '@angular/core';
-
 /**
  * @export
- * @interface ComponentLoaderConfigInterface
- * @template T
+ * @template T Type of component to load.
  */
 export interface ComponentLoaderConfigInterface<T> {
-  component: Type<T>;
+  component: T;
   componentPropertyName?: string;
   container: string;
-  properties?: string[];
+  properties?: Array<string>;
   prefix?: string;
   suffix?: string;
 }
