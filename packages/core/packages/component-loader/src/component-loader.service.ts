@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 // internal
-import { ComponentLoaderCommonClass } from './component-loader-common.aclass';
+import { ComponentLoaderCommonClass } from './component-loader-common.class';
 import { ComponentLoaderConfigInterface, ComponentLoaderServiceInterface } from '../interface';
 
 /**
@@ -85,7 +85,7 @@ export
   __link<S>(properties: Array<string> = this.properties, source: S): this {
     if (properties instanceof Array) {
       this.__wrap<S>(properties, source,
-        (property: string, sourcePropertyName: string, s?: S) => {
+        (property: string, sourcePropertyName: string, s?: Function | S | undefined) => {
           // TODO
           if (s && this.__set instanceof Function) {
             this.__set(property, s[sourcePropertyName]);
@@ -107,10 +107,15 @@ export
    * @template D Type of dynamic component.
    * @param component Dynamic component to create.
    */
-  __create<D = T>(component: Type<D>): this {
+  __create(component: Type<T>): this {
     if (!this.__component) {
-      this.__component = this.__resolve(component)
-        .create(this.injector);
+      const resolved = this.__resolve(component);
+      if (resolved) {
+        const created = resolved.create(this.injector);
+        if (created) {
+          this.__component = created;
+        }
+      }
     }
 
     return this;
@@ -130,13 +135,14 @@ export
   }
 
   /**
-   * @template S
-   * @param config
+   * @template S Type of source component.
+   * @param config Main configuration.
    * @param [source] Component which its properties are linked to dynamic component.
    */
   init<S>(config: ComponentLoaderConfigInterface<T>, source?: S): this {
     Object.assign(this, config);
 
+    console.info(config);
     this
       .__create(config.component)
       .attachView()
