@@ -1,5 +1,4 @@
 import { ComponentLoaderConfigInterface } from '../interface';
-// import { ComponentLoaderService } from './component-loader.service';
 import { PropertyClass } from '../../property';
 
 /**
@@ -10,107 +9,91 @@ import { PropertyClass } from '../../property';
 export function ComponentLoader<T>(config: ComponentLoaderConfigInterface<T>): Function {
   return (source: Function): void => {
     const wrapper: PropertyClass = new PropertyClass(config.prefix, config.suffix);
-    const t: any = source;
-
-    /*
-      Prepare methods
-    */
-    const assign = (p: string | Array<string>): void => {
-      t.componentLoaderService.__assign(p, t);
-    };
-
-    const create = (): any => {
-      t.componentLoaderService.init(config, t);
-
-      return t;
-    };
-
-    const destroy = (): void => {
-      t.componentLoaderService.__destroy();
-    };
-
-    const get = (property: string): any => {
-      return t.componentLoaderService.__get(property);
-    };
-
-    const set = (property: string, value: any): void => {
-      t.componentLoaderService.__set(property, value);
-    };
-
-    const subscribe = (property: string, ...args: Array<any>): void => {
-      t.componentLoaderService.__subscribe(property, ...args);
-    };
 
     // Wrap component methods with loaderService methods.
     Object.defineProperties(source.prototype, {
 
       __assign: {
-        value: assign
+        value: function assign(p: string | Array<string>): void {
+          this.componentLoaderService.__assign(p, this);
+        }
       },
 
       __component: {
-        set: function __component(value: any): void {
-          t.componentLoaderService.__component = value;
+        set: function component(value: any): void {
+          this.componentLoaderService.__component = value;
         },
-        get: function __component(): any {
-          return t.componentLoaderService.__component;
+        get: function component(): any {
+          return this.componentLoaderService.__component;
         }
       },
 
       __componentPropertyName: {
-        set: function __componentPropertyName(value: string): void {
-          t.componentLoaderService.componentPropertyName = value;
+        set: function componentPropertyName(value: string): void {
+          this.componentLoaderService.componentPropertyName = value;
         },
-        get: function __componentPropertyName(): string {
-          return t.componentLoaderService.componentPropertyName;
+        get: function componentPropertyName(): string {
+          return this.componentLoaderService.componentPropertyName;
         }
       },
 
       __create: {
-        value: create
+        value: function create(): any {
+          this.componentLoaderService.init(config, this);
+    
+          return this;
+        }
       },
 
       __destroy: {
-        value: destroy
+        value: function destroy(): void {
+          this.componentLoaderService.__destroy();
+        }
       },
 
       __get: {
-        value: get
+        value: function get(property: string): any {
+          return this.componentLoaderService.__get(property);
+        }
       },
 
       __prefix: {
-        set: function __prefix(value: any): void {
-          t.componentLoaderService.prefix = value;
+        set: function prefix(value: any): void {
+          this.componentLoaderService.prefix = value;
         },
-        get: function __prefix(): any {
-          return t.componentLoaderService.prefix;
+        get: function prefix(): any {
+          return this.componentLoaderService.prefix;
         }
       },
 
       __properties: {
-        set: function __properties(value: any): void {
-          t.componentLoaderService.properties = value;
+        set: function properties(value: any): void {
+          this.componentLoaderService.properties = value;
         },
-        get: function __properties(): any {
-          return t.componentLoaderService.properties;
+        get: function properties(): any {
+          return this.componentLoaderService.properties;
         }
       },
 
       __set: {
-        value: set
+        value: function set(property: string, value: any): void {
+          this.componentLoaderService.__set(property, value);
+        }
       },
 
       __suffix: {
-        set: function __suffix(value: any): void {
-          t.componentLoaderService.suffix = value;
+        set: function suffix(value: any): void {
+          this.componentLoaderService.suffix = value;
         },
-        get: function __suffix(): any {
-          return t.componentLoaderService.suffix;
+        get: function suffix(): any {
+          return this.componentLoaderService.suffix;
         }
       },
 
       __subscribe: {
-        value: subscribe
+        value: function subscribe(property: string, ...args: Array<any>): void {
+          this.componentLoaderService.__subscribe(property, ...args);
+        }
       }
 
     });
@@ -121,15 +104,13 @@ export function ComponentLoader<T>(config: ComponentLoaderConfigInterface<T>): F
           if (s && s['__set'] instanceof Function) {
             s['__set'](property, s[sourcePropertyName]);
           }
-        }
-        ,
-        (targetPropertyName: string, s?: T): any => {
-          if (s) {
-            if (s['__get'] instanceof Function) {
-              return s['__get'](targetPropertyName);
-            }
+        },
+        (property: string, s?: Function | T | undefined) => {
+          if (s && s['__get'] instanceof Function) {
+              return s['__get'](property);
           }
-      });
+        }
+      );
     }
   };
 }
