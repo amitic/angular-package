@@ -1,14 +1,16 @@
-import { Type, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import {
+  ComponentFactoryResolver,
+  ViewContainerRef
+} from '@angular/core';
 import { ComponentLoaderCommonInterface } from '.';
 
 /**
  * @export
- * @interface ComponentLoaderClassInterface
  * @extends {ComponentLoaderCommonAClass<T>}
- * @template T
+ * @template T Type of component to load.
  */
 export interface ComponentLoaderClassInterface<T> extends ComponentLoaderCommonInterface<T> {
   componentFactoryResolver: ComponentFactoryResolver;
   container?: ViewContainerRef;
-  __link?: (p: string[]) => void;
+  __link(): ((p: Array<string>) => void) | undefined;
 }
