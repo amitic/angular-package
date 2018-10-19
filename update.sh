@@ -1,5 +1,5 @@
 
-PACKAGES=(change-detection core docs prism reactive)
+PACKAGES=${PACKAGES:-change-detection core docs prism reactive}
 cd packages
 
 for package in ${PACKAGES[*]}; do
