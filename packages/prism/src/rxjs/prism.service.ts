@@ -29,7 +29,7 @@ export class PrismService {
    * @type {boolean}
    * @memberof PrismService
    */
-  public _async: boolean;
+  public _async!: boolean;
   set async(value: boolean) {
     this._async = value;
   }
@@ -77,7 +77,7 @@ export class PrismService {
    * @type {Object}
    * @memberof PrismService
    */
-  public _hooks: Object;
+  public _hooks!: Object;
   set hooks(value: Object) {
     this._hooks = value;
     if (value instanceof Object) {
@@ -106,7 +106,7 @@ export class PrismService {
    * @type {string}
    * @memberof PrismService
    */
-  public _language: string;
+  public _language!: string;
   set language(value: string) {
     this._language = value;
   }

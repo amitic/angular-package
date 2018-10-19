@@ -22,7 +22,8 @@ import { PrismService } from './prism.service';
  */
 @Injectable()
 export abstract class PrismHoodClass implements PrismInterface {
-  @ViewChild('el', { read: ElementRef }) el: ElementRef;
+  @ViewChild('el', { read: ElementRef }) el!: ElementRef;
+  @ViewChild('prel', { read: ElementRef }) prel!: ElementRef;
 
   ready = false;
 
@@ -72,7 +73,7 @@ export abstract class PrismHoodClass implements PrismInterface {
    * @type {string}
    * @memberof PrismHoodClass
    */
-  public _code: string;
+  public _code!: string;
   @Input('code')
   set code(code: string) {
     this._code = code;
@@ -90,7 +91,7 @@ export abstract class PrismHoodClass implements PrismInterface {
    * @type {Object}
    * @memberof PrismHoodClass
    */
-  public _hooks: Object;
+  public _hooks!: Object;
   @Input('hooks')
   set hooks(hooks: Object) {
     this._hooks = hooks;
@@ -110,10 +111,16 @@ export abstract class PrismHoodClass implements PrismInterface {
    * @type {string}
    * @memberof PrismHoodClass
    */
-  public _language: string;
+  public _language!: string;
   @Input('language') set language(language: string) {
     if (language) {
       if (typeof (language) === 'string') {
+        for (const el of [this.prel, this.el]) {
+          if (el) {
+            el.nativeElement.classList.remove(`language-${this._language}`);
+            el.nativeElement.classList.add(`language-${language}`);
+          }
+        }
         this._language = language;
         this.highlightElement({ code: this.code, language });
       } else {
@@ -135,6 +142,13 @@ export abstract class PrismHoodClass implements PrismInterface {
   @Input('interpolation') public interpolation?: Object | undefined;
 
   /**
+   * Don't escape html.
+   * @type {(boolean | undefined)}
+   * @memberof PrismHoodClass
+   */
+  @Input('noEscape') public noEscape?: boolean | undefined;
+
+  /**
    * Creates an instance of PrismHoodClass.
    * @param {ChangeDetectorRef} changeDetectorRef
    * @param {PrismService} prismService
@@ -143,7 +157,7 @@ export abstract class PrismHoodClass implements PrismInterface {
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
     public prismService: PrismService
-  ) {}
+  ) { }
 
   /**
    * @param {{code: string, language: string}} result
@@ -155,7 +169,9 @@ export abstract class PrismHoodClass implements PrismInterface {
         async: this.async,
         callback: this.callback,
         code: result.code,
-        interpolation: this.interpolation
+        language: result.language,
+        interpolation: this.interpolation,
+        noEscape: this.noEscape
       });
     }
   }

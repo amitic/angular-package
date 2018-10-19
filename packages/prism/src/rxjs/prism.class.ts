@@ -117,7 +117,7 @@ export abstract class PrismClass implements PrismInterface {
    * @type {ElementRef}
    * @memberof PrismClass
    */
-  @ViewChild('codeElementRef') public codeElementRef: ElementRef;
+  @ViewChild('codeElementRef') public codeElementRef!: ElementRef;
 
   /**
    * Creates an instance of PrismClass.

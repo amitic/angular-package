@@ -8,11 +8,14 @@ export interface PrismInterface {
   el: ElementRef;
   language: string;
   interpolation?: Object;
+  noEscape?: boolean;
 }
 
 export interface OptionsInterface  {
   async?: boolean;
   callback?: CallbackType;
   code?: string;
+  language?: string;
   interpolation?: Object;
+  noEscape?: boolean;
 };

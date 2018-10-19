@@ -44,10 +44,10 @@ import { SanitizedType } from './prism.type';
 @Subscribe<SanitizedType>(['code', 'language'])
 export class PrismComponent extends PrismClass implements AfterViewInit, OnChanges, OnInit {
 
-  code$: Observable<SanitizedType>;
-  code$$$: Subscription;
-  language$: Observable<SanitizedType>;
-  language$$$: Subscription;
+  code$!: Observable<SanitizedType>;
+  code$$$!: Subscription;
+  language$!: Observable<SanitizedType>;
+  language$$$!: Subscription;
 
   /**
    * @memberof PrismComponent

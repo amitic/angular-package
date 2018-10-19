@@ -29,14 +29,14 @@ export class PrismService {
     // Always need to have el.
     if (el instanceof ElementRef) {
       if (options.code) {
-        el.nativeElement.innerHTML = this.sanitizer.sanitize(SecurityContext.HTML, this.escapeHtml(options.code));
+        el.nativeElement.innerHTML = this.sanitizer.sanitize(options.noEscape ? SecurityContext.NONE : SecurityContext.HTML,  options.noEscape ? options.code : this.escapeHtml(options.code));
       }
       // Perform interpolate.
       if (options.interpolation) {
         el.nativeElement.innerHTML = this.interpolate(el.nativeElement.innerHTML, options.interpolation);
       }
       // Perform prism highlight code.
-      Prism.highlightElement(el.nativeElement, options.async, options.callback);
+      if (options.language && options.language !== 'none') Prism.highlightElement(el.nativeElement, options.async, options.callback);
     }
   }
 
