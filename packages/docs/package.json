@@ -21,7 +21,7 @@
     "bundle:dev": "rollup -c rollup.config.js --environment BUILD:development",
     "prebuild": "npm install",
     "build": "./node_modules/.bin/ngc -p tsconfig.json",
-    "postbuild": "npm run copyfiles:all",
+    "postbuild": "npm run copyfiles:all && rimraf ./node_modules",
     "prepublish": "",
     "start": "npm run build && npm run bundle",
     "clean:start": "npm run clean && npm start",

@@ -27,7 +27,7 @@
     "clean:store": "rimraf ./store",
     "clean:type": "rimraf ./type",
     "clean:all": "npm run clean && npm run clean:cl && npm run clean:wrapper && npm run clean:src && npm run clean:interface && npm run clean:store && npm run clean:type",
-    "postbuild": "",
+    "postbuild": "rimraf ./node_modules",
     "prebuild": "npm install",
     "prepare": "",
     "start": "npm run build && npm run bundle",

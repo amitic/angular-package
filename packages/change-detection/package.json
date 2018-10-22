@@ -25,7 +25,7 @@
     "clean:interface": "rimraf ./interface",
     "clean:coverage": "rimraf ./coverage",
     "clean:all": "npm run clean && npm run clean:src && npm run clean:coverage && npm run clean:change-detector && npm run clean:interface",
-    "postbuild": "",
+    "postbuild": "rimraf ./node_modules",
     "prebuild": "npm install",
     "prepare": "",
     "start": "npm run build && npm run bundle",
