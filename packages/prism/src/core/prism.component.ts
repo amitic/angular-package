@@ -8,7 +8,7 @@ import {
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import { ApChangeDetection } from '@angular-package/change-detection';
+import { ChangeDetection } from '@angular-package/change-detection';
 
 // internal
 import { PrismHoodClass } from './prism.class';
@@ -31,7 +31,7 @@ import { PrismService } from './prism.service';
   selector: 'ngx-prism',
   templateUrl: './prism.component.html'
 })
-@ApChangeDetection(false, {
+@ChangeDetection(false, {
   async: true,
   callback: true,
   code: true,
