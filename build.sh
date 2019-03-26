@@ -7,6 +7,7 @@ for package in ${PACKAGES[*]}; do
   cd ${package}
   packagejson=$(ls package.json 2>/dev/null || true) 
   if [[ $packagejson == *"package.json"* ]]; then
+    npm install
     npm run clean:start
   fi
   cd ..
